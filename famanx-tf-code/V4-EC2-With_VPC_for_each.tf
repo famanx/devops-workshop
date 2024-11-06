@@ -3,16 +3,16 @@ provider "aws" {
 }
 
 resource "aws_instance" "demo-server" {
-    ami = "ami-053b0d53c279acc90"
+    ami = "ami-0866a3c8686eaeeba"
     instance_type = "t2.micro"
     key_name = "new-dpp"
     //security_groups = [ "demo-sg" ]
     vpc_security_group_ids = [aws_security_group.demo-sg.id]
     subnet_id = aws_subnet.dpp-public-subnet-01.id 
-for_each = toset(["jenkins-master", "build-slave", "ansible"])
-   tags = {
-     Name = "${each.key}"
-   }
+    for_each = toset(["jenkins-master", "build-slave", "ansible"])
+    tags = {
+      Name = "${each.key}"
+    }
 }
 
 resource "aws_security_group" "demo-sg" {
@@ -21,7 +21,7 @@ resource "aws_security_group" "demo-sg" {
   vpc_id = aws_vpc.dpp-vpc.id 
   
   ingress {
-    description      = "SSH access"
+    description      = "SHH access"
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
@@ -64,7 +64,7 @@ resource "aws_subnet" "dpp-public-subnet-01" {
   map_public_ip_on_launch = "true"
   availability_zone = "us-east-1a"
   tags = {
-    Name = "dpp-public-subent-01"
+    Name = "dpp-public-subnet-01"
   }
 }
 
@@ -74,7 +74,7 @@ resource "aws_subnet" "dpp-public-subnet-02" {
   map_public_ip_on_launch = "true"
   availability_zone = "us-east-1b"
   tags = {
-    Name = "dpp-public-subent-02"
+    Name = "dpp-public-subnet-02"
   }
 }
 
